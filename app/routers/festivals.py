@@ -1,8 +1,9 @@
+# app/routers/festivals.py
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
-from typing import List, Optional
-from pydantic import BaseModel
+from typing import List, Optional, Literal
+from pydantic import BaseModel, Field
 
 from ..db import get_session
 from ..models import Festival
@@ -10,27 +11,29 @@ from ..schemas import FestivalOut
 
 router = APIRouter(prefix="/festivals", tags=["festivals"])
 
+# styles 허용 값(9개)
+FestivalStyle = Literal[
+    "TRADITIONAL", "ART_PERFORMANCE", "FOOD",
+    "NATURE", "EXPERIENCE", "TRENDY",
+    "COMMUNITY", "LOCAL", "INTERNATIONAL"
+]
 
-# 사용자 성향 입력 스키마
-class MBTIInput(BaseModel):
+class UserPreferenceV2(BaseModel):
+    areaCode: int
+    styles: List[FestivalStyle] = Field(..., min_items=1, description="축제 스타일 최소 1개 이상")
     isNewPlace: bool
     isSolo: bool
     prefersEnjoyment: bool
     isSpontaneous: bool
-
-class UserPreference(BaseModel):
-    styles: List[str]
-    mbti: MBTIInput
     additionalInfo: Optional[str] = None
-    limit: int = 5
+    limit: int = Field(5, ge=1, le=50)
 
 @router.post("/random", response_model=List[FestivalOut])
 async def get_random_festivals(
-        preference: UserPreference,     # 요청 body
+        preference: UserPreferenceV2,
         session: AsyncSession = Depends(get_session),
 ):
-    # 우선은 단순히 랜덤으로 추천
+    # 현재는 성향을 사용하지 않고 랜덤 추출만 수행
     stmt = select(Festival).order_by(func.rand()).limit(preference.limit)
     result = await session.execute(stmt)
-    rows = result.scalars().all()
-    return rows
+    return result.scalars().all()

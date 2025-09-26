@@ -1,11 +1,9 @@
 {
   "areaCode" : 34,
   "styles": ["FOOD", "NATURE", "TRENDY"],
-  "mbti" : {
   "isNewPlace": true,
   "isSolo": false,
   "prefersEnjoyment": true,
-  "isSpontaneous": false
-  },
+  "isSpontaneous": false,
   "additionalInfo": "나는 바다를 좋아하고 활동을 좋아해"
 }
