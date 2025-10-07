@@ -6,7 +6,7 @@ import os
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
-DATABASE_URL = "mysql+asyncmy://admin:festa-server-1234@festapick-db.cjwm4iu0a67l.ap-northeast-2.rds.amazonaws.com:3306/festapick?charset=utf8mb4"
+
 
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL is not set in .env")
