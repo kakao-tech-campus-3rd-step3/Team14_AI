@@ -85,3 +85,26 @@ RETURN
     }
 ]
 ```
+
+
+### 텍스트 기반 추천 축제 조회 API
+
+- TfidfVectorizer 활용
+
+### 예시
+
+GET
+
+```
+http://127.0.0.1:8000/festivals/recommend
+```
+출력 동일
+
+### 추천 축제 조회 및 설명 api
+
+GET
+```
+http://127.0.0.1:8000/festivals/recommend/explain
+```
+
+출력 동일 + 유사도 가장 높은 단어
