@@ -5,7 +5,7 @@
 
 - fastAPI 활용
 
-### 예시  
+### 예시
 
 GET
 
@@ -108,3 +108,22 @@ http://127.0.0.1:8000/festivals/recommend/explain
 ```
 
 출력 동일 + 유사도 가장 높은 단어
+
+
+### 2025 10 31 수정
+
+- ai기반 축제 시스템 추가
+  POST 입력 예시
+```
+http://localhost:8000/ai/recommend/model
+{
+    "areaCode": 6,
+    "styles": ["TRENDY", "FOOD", "FUNEXPERIENCE"],
+    "isNewPlace": true,
+    "isSolo": false,
+    "prefersEnjoyment": true,
+    "isSpontaneous": false,
+    "additionalInfo": "먹거리와 재미가 있는 부산 축제",
+    "limit": 5
+  }
+```

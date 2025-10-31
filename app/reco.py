@@ -64,7 +64,7 @@ _KO_STOP_SUFFIXES = ("축제", "행사")
 _KO_STOP_TOKENS = {"축제", "행사", "공연", "페스티벌", "축제는", "행사는"}  # 원하면 확장
 
 # ---- A) 간단 랭킹 (이유 없음) ----
-def rank_simple(user_text: str, docs: List[Doc], top_k: int = 5) -> List[str]:
+def rank_simple(user_text: str, docs: List[Doc], top_k: int = 8) -> List[str]:
     if not docs:
         return []
     corpus = [user_text] + [d.text for d in docs]
