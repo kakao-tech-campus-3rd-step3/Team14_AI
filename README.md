@@ -249,6 +249,9 @@ http://localhost:8000/ai/recommend/model
 
 ### 2025 11 05 수정
 
+- api 불러오기 기능 수정
+- 텍스트 기반으로 빠른 응답 기능 추가
+
 ---
 
 ## 시스템 아키텍쳐
@@ -327,6 +330,3 @@ http://localhost:8000/ai/recommend/model
     </tbody>
   </table>
 </div>
-
-- api 불러오기 기능 수정
-- 텍스트 기반으로 빠른 응답 기능 추가
