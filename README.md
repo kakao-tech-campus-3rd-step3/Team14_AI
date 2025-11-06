@@ -127,3 +127,8 @@ http://localhost:8000/ai/recommend/model
     "limit": 5
   }
 ```
+
+### 2025 11 05 수정
+
+- api 불러오기 기능 수정
+- 텍스트 기반으로 빠른 응답 기능 추가
