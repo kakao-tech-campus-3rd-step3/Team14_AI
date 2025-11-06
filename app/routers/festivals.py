@@ -1,5 +1,5 @@
 # app/routers/festivals.py
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from typing import List, Optional, Literal
@@ -159,3 +159,25 @@ async def recommend_with_reasons(payload: PreferenceIn, session: AsyncSession = 
             )
 
     return RecommendationOutExplained(ok=True, profile_text=profile_text, recommended=out)
+
+@router.get("/all", response_model=List[FestivalOut], summary="모든 축제 목록 (과거/미래 포함, 이름 검색 가능)")
+async def get_all_festivals(
+        session: AsyncSession = Depends(get_session),
+        title: Optional[str] = Query(None, description="축제 이름 일부로 검색"),
+        limit: int = Query(1000, ge=1, le=5000, description="반환할 최대 축제 개수"),
+        offset: int = Query(0, ge=0, description="페이지 오프셋"),
+):
+    # 기본 쿼리: 모든 축제 포함
+    stmt = select(Festival)
+
+    # 이름 필터 (부분 일치)
+    if title:
+        stmt = stmt.where(Festival.title.like(f"%{title}%"))
+
+    # 정렬 및 페이지네이션
+    stmt = stmt.order_by(Festival.startDate.asc()).limit(limit).offset(offset)
+
+    # 실행
+    result = await session.execute(stmt)
+    rows = result.scalars().all()
+    return rows
