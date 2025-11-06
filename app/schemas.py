@@ -2,26 +2,30 @@
 from __future__ import annotations
 from typing import List, Optional, Literal
 from pydantic import BaseModel, Field, field_validator
+from pydantic import field_serializer
 from datetime import date
+from typing import Optional
 
-# ====== 공통 출력: DB Festival ======
 class FestivalOut(BaseModel):
     id: int
     areaCode: int
-    endDate: date
-    startDate: date
+    startDate: Optional[date]
+    endDate: Optional[date]
     manager_id: Optional[int]
     homePage: Optional[str]
-    overView: str
-    addr1: str
+    overView: Optional[str]
+    addr1: Optional[str]
     addr2: Optional[str]
     contentId: Optional[str]
-    posterInfo: str
-    title: str
-    state: Literal["APPROVED", "DENIED", "PROCESSING"]
+    posterInfo: Optional[str]
+    title: Optional[str]
+    state: Optional[str]
 
-    class Config:
-        from_attributes = True
+    # ✅ date → string 변환
+    @field_serializer("startDate", "endDate")
+    def serialize_date(self, value: Optional[date], _info):
+        return value.isoformat() if value else None
+
 
 FestivalStyle = Literal[
     "TRADITIONAL", "ART_PERFORMANCE", "FOOD",
@@ -89,3 +93,6 @@ class RecommendationOutExplained(BaseModel):
     ok: bool = True
     profile_text: str
     recommended: List[RecommendedFestival]
+
+class FestivalWithReason(FestivalOut):
+    reason: Optional[str] = None
